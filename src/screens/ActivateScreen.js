@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, Spinner } from "react-bootstrap";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function ActivateScreen() {
   const { uid, token } = useParams();
   const navigate = useNavigate();
