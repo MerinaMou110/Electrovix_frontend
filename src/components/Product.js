@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../actions/cartActions"; // Assuming you have this action
 import { showSuccessToast } from "./Toast"; // Import toast utility function
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function Product({ product }) {
   const dispatch = useDispatch();
   const [qty] = useState(1); // Quantity default to 1
@@ -35,7 +35,7 @@ function Product({ product }) {
           {product.discountPercentage > 0 && (
             <span className="sale-badge">{percentageOff}</span>
           )}
-          <Card.Img src={product.image} alt={product.name} />
+          <Card.Img src={`${BASE_URL}${product.image}`} alt={product.name} />
         </div>
       </Link>
       <Card.Body>
