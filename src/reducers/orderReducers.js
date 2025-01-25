@@ -182,17 +182,24 @@ export const orderDeliverReducer = (state = {}, action) => {
   }
 };
 
-export const orderListMyReducer = (state = { orders: [] }, action) => {
+export const orderListMyReducer = (
+  state = { orders: [], page: 1, pages: 1, total: 0 },
+  action
+) => {
   switch (action.type) {
     case ORDER_LIST_MY_REQUEST:
       return {
         loading: true,
+        orders: [],
       };
 
     case ORDER_LIST_MY_SUCCESS:
       return {
         loading: false,
-        orders: action.payload,
+        orders: action.payload.orders, // Store the orders
+        page: action.payload.page, // Store the current page
+        pages: action.payload.pages, // Store the total number of pages
+        total: action.payload.total, // Store the total number of orders
       };
 
     case ORDER_LIST_MY_FAIL:
@@ -204,6 +211,9 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
     case ORDER_LIST_MY_RESET:
       return {
         orders: [],
+        page: 1,
+        pages: 1,
+        total: 0,
       };
 
     default:
@@ -211,24 +221,26 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
   }
 };
 
-export const orderListReducer = (state = { orders: [] }, action) => {
+export const orderListReducer = (
+  state = { orders: [], page: 1, pages: 1, total: 0 },
+  action
+) => {
   switch (action.type) {
     case ORDER_LIST_REQUEST:
-      return {
-        loading: true,
-      };
+      return { loading: true, orders: [] };
 
     case ORDER_LIST_SUCCESS:
       return {
         loading: false,
-        orders: action.payload,
+        orders: action.payload.orders,
+        page: action.payload.page,
+        pages: action.payload.pages,
+        total: action.payload.total,
       };
 
     case ORDER_LIST_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
+      return { loading: false, error: action.payload };
+
     default:
       return state;
   }

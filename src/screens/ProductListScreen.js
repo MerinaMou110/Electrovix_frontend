@@ -1,3 +1,5 @@
+// Modify ProductListScreen
+
 import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
@@ -118,10 +120,8 @@ function ProductListScreen() {
                     <td>{product._id}</td>
                     <td>{product.name}</td>
                     <td>৳{product.price}</td>
-                    <td>{product.category?.name}</td>{" "}
-                    {/* Ensure category name is rendered */}
-                    <td>{product.brand?.name}</td>{" "}
-                    {/* Ensure brand name is rendered */}
+                    <td>{product.category?.name}</td>
+                    <td>{product.brand?.name}</td>
                     <td>
                       <LinkContainer to={`/admin/products/${product._id}/edit`}>
                         <Button variant="light" className="btn-sm">
@@ -147,7 +147,15 @@ function ProductListScreen() {
               )}
             </tbody>
           </Table>
-          <Paginate pages={pages} page={Number(currentPage)} isAdmin={true} />
+          <Paginate
+            pages={pages}
+            page={page}
+            isAdmin={true} // For admin page
+            basePath="/productlist" // Ensure correct path
+            keyword={keyword}
+            filterBy={filterBy}
+            currentPage={currentPage}
+          />
         </div>
       )}
     </div>

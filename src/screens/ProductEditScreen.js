@@ -8,18 +8,20 @@ import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productActions";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 function ProductEditScreen() {
   const { id: productId } = useParams();
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [brands, setBrands] = useState([]);
-
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [discountPercentage, setDiscountPercentage] = useState(0); // New state for discount percentage
   const [uploading, setUploading] = useState(false);
   const [categories, setCategories] = useState([]);
 
@@ -40,22 +42,24 @@ function ProductEditScreen() {
     const fetchCategoriesAndBrands = async () => {
       try {
         const { data: categoriesData } = await axios.get(
-          "/api/products/categories/"
+          `${BASE_URL}/api/products/categories/`
         );
-        const { data: brandsData } = await axios.get("/api/products/brand/");
+        const { data: brandsData } = await axios.get(
+          `${BASE_URL}/api/products/brand/`
+        );
 
         setCategories(categoriesData);
         setBrands(brandsData);
 
-        // After fetching categories and brands, set the product's brand and category
         if (product.name && product._id === Number(productId)) {
           setName(product.name);
           setPrice(product.price);
           setImage(product.image);
-          setBrand(product.brand.slug); // Set brand slug
-          setCategory(product.category.slug); // Set category slug
+          setBrand(product.brand.slug);
+          setCategory(product.category.slug);
           setCountInStock(product.countInStock);
           setDescription(product.description);
+          setDiscountPercentage(product.discountPercentage || 0); // Set the discount percentage
         }
       } catch (error) {
         console.error("Error fetching categories or brands:", error);
@@ -70,7 +74,6 @@ function ProductEditScreen() {
         dispatch(listProductDetails(productId));
         fetchCategoriesAndBrands();
       } else {
-        // Only call this if data is already loaded
         fetchCategoriesAndBrands();
       }
     }
@@ -85,9 +88,10 @@ function ProductEditScreen() {
         price,
         image,
         brand,
-        category, // This will be the slug
+        category,
         countInStock,
         description,
+        discountPercentage, // Include discountPercentage in the update payload
       })
     );
   };
@@ -109,15 +113,14 @@ function ProductEditScreen() {
       };
 
       const { data } = await axios.post(
-        "/api/products/upload/",
+        `${BASE_URL}/api/products/upload/`,
         formData,
         config
       );
-      console.log("Upload response:", data); // Log the response
       setImage(data.image);
       setUploading(false);
     } catch (error) {
-      console.error("Upload error:", error); // Log the error
+      console.error("Upload error:", error);
       setUploading(false);
     }
   };
@@ -158,6 +161,16 @@ function ProductEditScreen() {
               ></Form.Control>
             </Form.Group>
 
+            <Form.Group controlId="discountPercentage">
+              <Form.Label>Discount Percentage</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter discount percentage"
+                value={discountPercentage}
+                onChange={(e) => setDiscountPercentage(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
             <Form.Group controlId="image">
               <Form.Label>Image</Form.Label>
               <Form.Control
@@ -178,7 +191,7 @@ function ProductEditScreen() {
               <Form.Control
                 as="select"
                 value={brand}
-                onChange={(e) => setBrand(e.target.value)} // Use slug directly
+                onChange={(e) => setBrand(e.target.value)}
               >
                 <option value="">Select Brand</option>
                 {brands.map((b) => (
@@ -204,7 +217,7 @@ function ProductEditScreen() {
               <Form.Control
                 as="select"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)} // Use slug directly
+                onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (

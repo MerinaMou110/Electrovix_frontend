@@ -12,7 +12,16 @@ function Paginate({
   brand_slug = "",
   minPrice = "",
   maxPrice = "",
+  basePath = "/", // Pass basePath to handle different paths dynamically
 }) {
+  // Modify basePath if user is admin
+  const getBasePath = () => {
+    if (isAdmin) {
+      return `/admin${basePath}`; // Prefix basePath with /admin for admin pages
+    }
+    return basePath; // Use original basePath for non-admin users
+  };
+
   const getSearchQuery = (pageNumber) => {
     return `?keyword=${keyword}&filter_by=${filterBy}&page=${pageNumber}&category_slug=${category_slug}&brand_slug=${brand_slug}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
   };
@@ -25,7 +34,7 @@ function Paginate({
             <LinkContainer
               key={x + 1}
               to={{
-                pathname: !isAdmin ? "/" : "/admin/productlist",
+                pathname: getBasePath(), // Adjust the base path for admin
                 search: getSearchQuery(x + 1),
               }}
             >

@@ -55,7 +55,7 @@ function Header() {
                 isActive("/") ? "active-brand" : ""
               }`}
             >
-              ELCON
+              Electrovix
             </Navbar.Brand>
           </LinkContainer>
 
