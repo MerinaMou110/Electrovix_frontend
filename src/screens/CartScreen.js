@@ -13,7 +13,7 @@ import {
 import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import { showSuccessToast } from "../components/Toast"; // Import the toast utility
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function CartScreen() {
   const { id: productId } = useParams();
   const location = useLocation();
@@ -62,7 +62,12 @@ function CartScreen() {
               <ListGroup.Item key={item.product}>
                 <Row>
                   <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
+                    <Image
+                      src={`${BASE_URL}${item.image}`}
+                      alt={item.name}
+                      fluid
+                      rounded
+                    />
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>

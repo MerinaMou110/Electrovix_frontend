@@ -6,7 +6,7 @@ import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
 import { ORDER_CREATE_RESET } from "../constants/OrderConstants";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function PlaceOrderScreen() {
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, error, success } = orderCreate;
@@ -92,7 +92,7 @@ function PlaceOrderScreen() {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={`${BASE_URL}${item.image}`}
                             alt={item.name}
                             fluid
                             rounded

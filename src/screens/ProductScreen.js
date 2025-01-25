@@ -20,6 +20,7 @@ import {
 } from "../actions/productActions";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 import Paginate from "../components/Paginate";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function ProductScreen() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
@@ -71,7 +72,11 @@ function ProductScreen() {
         <div>
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image
+                src={`${BASE_URL}${product.image}`}
+                alt={product.name}
+                fluid
+              />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">

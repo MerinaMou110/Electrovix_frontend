@@ -5,7 +5,7 @@ import { Carousel, Image } from "react-bootstrap";
 import Loader from "./Loader";
 import Message from "./Message";
 import { listTopProducts } from "../actions/productActions";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function ProductCarousel() {
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ function ProductCarousel() {
         <Carousel.Item key={product._id}>
           <Link to={`/product/${product._id}`} className="carousel-link">
             <Image
-              src={product.image}
+              src={`${BASE_URL}${product.image}`}
               alt={product.name}
               fluid
               className="carousel-image"

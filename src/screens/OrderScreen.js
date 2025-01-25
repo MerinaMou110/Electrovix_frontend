@@ -19,7 +19,7 @@ import {
 } from "../actions/orderActions";
 import { ORDER_DELIVER_RESET } from "../constants/OrderConstants";
 import { showSuccessToast, showErrorToast } from "../components/Toast";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 function OrderScreen() {
   const { id: orderId } = useParams();
   const [searchParams] = useSearchParams();
@@ -149,7 +149,7 @@ function OrderScreen() {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={`${BASE_URL}${item.image}`}
                             alt={item.name}
                             fluid
                             rounded
