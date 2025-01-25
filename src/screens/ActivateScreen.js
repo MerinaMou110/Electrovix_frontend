@@ -17,7 +17,7 @@ function ActivateScreen() {
     const activateAccount = async () => {
       try {
         const { data } = await axios.get(
-          `/api/users/activate/${uid}/${token}/`
+          `${BASE_URL}/api/users/activate/${uid}/${token}/`
         );
         setStatus({
           loading: false,

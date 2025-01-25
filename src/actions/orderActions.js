@@ -34,6 +34,7 @@ import {
   ORDER_DELIVER_RESET,
 } from "../constants/OrderConstants";
 import { CART_CLEAR_ITEMS } from "../constants/cartConstant";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Action to create a new order
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -50,7 +51,11 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/orders/add/`, order, config);
+    const { data } = await axios.post(
+      `${BASE_URL}/api/orders/add/`,
+      order,
+      config
+    );
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,
@@ -92,7 +97,7 @@ export const initiatePayment =
       };
 
       const { data } = await axios.post(
-        `/api/orders/initiate-payment/`,
+        `${BASE_URL}/api/orders/initiate-payment/`,
         { order_id: orderId, totalPrice },
         config
       );
@@ -216,7 +221,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/orders/${id}/`, config);
+    const { data } = await axios.get(`${BASE_URL}/api/orders/${id}/`, config);
 
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
@@ -251,7 +256,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/orders/${id}/pay/`,
+      `${BASE_URL}/api/orders/${id}/pay/`,
       paymentResult,
       config
     );
@@ -289,7 +294,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/orders/${order._id}/deliver/`,
+      `${BASE_URL}/api/orders/${order._id}/deliver/`,
       {},
       config
     );
@@ -326,7 +331,10 @@ export const listMyOrders = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/orders/myorders/`, config);
+    const { data } = await axios.get(
+      `${BASE_URL}/api/orders/myorders/`,
+      config
+    );
 
     dispatch({
       type: ORDER_LIST_MY_SUCCESS,
@@ -360,7 +368,7 @@ export const listOrders = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/orders/`, config);
+    const { data } = await axios.get(`${BASE_URL}/api/orders/`, config);
 
     dispatch({
       type: ORDER_LIST_SUCCESS,
